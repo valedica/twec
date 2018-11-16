@@ -1,0 +1,3 @@
+[submodule "gensim"]
+	path = gensim
+	url = https://github.com/valedica/gensim.git
