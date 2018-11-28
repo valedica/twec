@@ -13,7 +13,7 @@ You can use pip to install all the previous required packages (https://pypi.org/
 pip install --upgrade numpy
 pip install --upgrade cython
 ```
-Twec relies on a slightly modiefied version of Gensim v.3.6.0 , provided in this package: do not move the *gensim* folder the project directory.
+Twec relies on a slightly modiefied version of Gensim v.3.6.0 , provided in this package: do not move the *gensim* folder from the project directory.
 
 ## Quickstart Instructions
 
