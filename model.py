@@ -43,14 +43,14 @@ class twec_model(object):
     def initialize_from_compass(self, model):
         print("Initializing temporal embeddings from the atemporal compass.")
         if self.init_mode=="copy":
-            model = copy.deepcopy(self.context)
+            model = copy.deepcopy(self.compass)
         else:
             vocab_m = model.wv.index2word
-            indices = [context.wv.vocab[w].index for w in vocab_m]
-            new_syn1neg = np.array([context.syn1neg[index]for index in indices])
+            indices = [compass.wv.vocab[w].index for w in vocab_m]
+            new_syn1neg = np.array([compass.syn1neg[index]for index in indices])
             model.syn1neg = new_syn1neg
             if init_mode=="both":
-                new_syn0 = np.array([context.wv.syn0[index]for index in indices])
+                new_syn0 = np.array([compass.wv.syn0[index]for index in indices])
                 model.wv.syn0 = new_syn0
         model.learn_hidden = False
         model.alpha = self.dynamic_alpha
@@ -70,19 +70,19 @@ class twec_model(object):
 
     def train_static(self):
         if os.path.isfile(os.path.join(self.opath,"static.model")):
-            self.context = Word2Vec.load(os.path.join(self.opath,"static.model"))
+            self.compass = Word2Vec.load(os.path.join(self.opath,"static.model"))
             print("Stic model loaded.")
         else:
             sentences = PathLineSentences(self.train)
             sentences.input_files = [s for s in sentences.input_files if not os.path.basename(s).startswith('.')]
             print("Training static embeddings.")
-            self.context = self.train_model(sentences)
-            self.context.save(os.path.join(self.opath,"static.model"))
+            self.compass = self.train_model(sentences)
+            self.compass.save(os.path.join(self.opath,"static.model"))
         global gvocab
-        gvocab = self.context.wv.vocab
+        gvocab = self.compass.wv.vocab
 
     def train_temporal_embeddings(self):
-        if self.context == None:
+        if self.compass == None:
                 self.train_static()
         files = glob.glob(self.train+'/*.txt')
         tot_n_files = len(files)

@@ -39,7 +39,7 @@ def parse_args():
         parser.add_argument('--opath', type=str, default='model',
                             help='Name of the desired output folder. Default is model.')
 
-        parser.add_argument('--init_mode', choices=["hidden", "both", "copy"],
+        parser.add_argument('--init_mode', default='hidden', choices=["hidden", "both", "copy"],
                             help='If \"hidden\" (default), initialize temporal models with hidden embeddings of the context;'+ 
                             'if \"both\", initilize also the word embeddings;'+
                             'if \"copy\", temporal models are initiliazed as a copy of the context model (same vocabulary)')
