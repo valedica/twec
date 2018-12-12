@@ -46,11 +46,11 @@ class twec_model(object):
             model = copy.deepcopy(self.compass)
         else:
             vocab_m = model.wv.index2word
-            indices = [compass.wv.vocab[w].index for w in vocab_m]
-            new_syn1neg = np.array([compass.syn1neg[index]for index in indices])
+            indices = [self.compass.wv.vocab[w].index for w in vocab_m]
+            new_syn1neg = np.array([self.compass.syn1neg[index]for index in indices])
             model.syn1neg = new_syn1neg
-            if init_mode=="both":
-                new_syn0 = np.array([compass.wv.syn0[index]for index in indices])
+            if self.init_mode=="both":
+                new_syn0 = np.array([self.compass.wv.syn0[index]for index in indices])
                 model.wv.syn0 = new_syn0
         model.learn_hidden = False
         model.alpha = self.dynamic_alpha
@@ -59,6 +59,7 @@ class twec_model(object):
     
 
     def train_model(self, sentences):
+        model = None
         if self.compass == None or self.init_mode != "copy":
             model = Word2Vec(sg=self.sg, size=self.size, alpha=self.static_alpha, iter=self.static_iter, negative=self.negative,
                             window=self.window, min_count=self.min_count, workers=self.workers)
