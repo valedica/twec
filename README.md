@@ -1,4 +1,6 @@
-# twec: Temporal Word Embeddings with a Compass
+# TWEC: Temporal Word Embeddings with a Compass
+
+Di Carlo, V., Bianchi, F. & Palmonari, M. (2019, January). **Training Temporal Word Embeddings with a Compass**. AAAI 
 
 This package contains Python code to build temporal word embeddings with a compass!
 
