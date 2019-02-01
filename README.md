@@ -1,31 +1,25 @@
 # TWEC: Temporal Word Embeddings with a Compass
 
-+ Di Carlo, V., Bianchi, F. & Palmonari, M. (2019, January). **Training Temporal Word Embeddings with a Compass**. AAAI 
-
 This package contains Python code to build temporal word embeddings with a compass!
 
-## Requirements
+## Reference
 
-* Python 2.7+
-* numpy
-* Cython (optional)
-
-You can use pip to install all the previous required packages (https://pypi.org/project/pip/). Cython is optional but very recommended (19x speed)!
-```
-pip install --upgrade numpy
-pip install --upgrade cython
-```
-Twec relies on a slightly modiefied version of Gensim v.3.6.0 , provided in this package: do not move the *gensim* folder from the project directory.
++ Di Carlo, V., Bianchi, F. & Palmonari, M. (2019, January). **Training Temporal Word Embeddings with a Compass**. AAAI 
 
 ## Quickstart Instructions
 
-1. Clone this repository to your computer;
-2. Locate the directory *train* inside the twec directory and place there the input text splices of your diachronic corpus (e.g. "data/1990.txt", "data/1991.txt", ...)
-3. Run the script *main.py* of twec. The output word embeddings will be placed inside the folder named *model*.
+TWEC relies on a slightly modiefied version of Gensim v.3.6.0. 
+To install the required packages, execute these commands in your virtualenv (tested with python 3.7.1):
+
+```
+git clone https://github.com/valedica/twec.git
+pip install git+https://github.com/valedica/gensim.git
+```
+To start training your temporal word embeddings, just type:
 ```
 python main.py
 ```
-If you want, you can change the default parameters. For more datails:
+You can change the default parameters if you want. For more datails:
 ```
 python main.py --help
 ```
