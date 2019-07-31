@@ -1,10 +1,13 @@
-# TWEC: Temporal Word Embeddings with a Compass
+# TWEC: Temporal Word Embeddings with a Compass (AAAI 2019)
 
-This package contains Python code to build temporal word embeddings with a compass!
+This package contains Python code to build temporal word embeddings with a compass! 
+One of the problems of temporal word embeddings is that they require alignment between corpora.  We propose a method to aligned distributional representation based on word2vec.  This method is efficient and it is based on a simple heuristic: we freeze one layer of the CBOW architecture and train temporal embedding on the other matrix. See the [paper](https://aaai.org/ojs/index.php/AAAI/article/view/4594) for more details.
 
 ## Reference
 
-+ Di Carlo, V., Bianchi, F. & Palmonari, M. (2019, January). **Training Temporal Word Embeddings with a Compass**. AAAI 
+This work is based on the following paper ([link](https://aaai.org/ojs/index.php/AAAI/article/view/4594)). 
+
++ Di Carlo, V., Bianchi, F., & Palmonari, M. (2019). **Training Temporal Word Embeddings with a Compass**. Proceedings of the AAAI Conference on Artificial Intelligence, 33(01), 6326-6334. https://doi.org/10.1609/aaai.v33i01.33016326
 
 ## Quickstart Instructions
 
