@@ -2,6 +2,9 @@
 TWEC: Temporal Word Embeddings with a Compass (AAAI 2019)
 =========================================================
 
+* **News May-2021**: Thanks to wabyking (https://github.com/wabyking) we found that a gensim compilation problem was affecting the installation of our tool. The compass was unstable during the second part of the training. We updated our edited gensim package with the compilation so that this problem does not occur. There might be a small variation in the results you get with the new stable version. Our AAAI results were computed on a compiled version of the software and were not affected by this issue.
+
+
 This package contains Python code to build temporal word embeddings with a compass!
 One of the problems of temporal word embeddings is that they require alignment between corpora.
 We propose a method to aligned distributional representation based on word2vec.
