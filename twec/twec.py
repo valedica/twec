@@ -43,7 +43,7 @@ class TWEC:
         self.trained_slices = dict()
         self.gvocab = []
         self.static_iter = siter
-        self.dynamic_iter =diter
+        self.dynamic_iter = diter
         self.negative = ns
         self.window = window
         self.static_alpha = alpha
@@ -69,16 +69,16 @@ class TWEC:
         else:
             if self.compass.layer1_size != self.size:
                 return Exception("Compass and Slice have different vector sizes")
-            vocab_m = model.wv.index2word
-            indices = [self.compass.wv.vocab[w].index for w in vocab_m]
+            vocab_m = model.wv.index_to_key
+            indices = [self.compass.wv.key_to_index[w] for w in vocab_m]
             new_syn1neg = np.array([self.compass.syn1neg[index] for index in indices])
             model.syn1neg = new_syn1neg
             if self.init_mode == "both":
-                new_syn0 = np.array([self.compass.wv.syn0[index] for index in indices])
-                model.wv.syn0 = new_syn0
+                new_vectors = np.array([self.compass.wv.vectors[index] for index in indices])
+                model.wv.vectors = new_vectors
         model.learn_hidden = False
         model.alpha = self.dynamic_alpha
-        model.iter = self.dynamic_iter
+        model.epochs = self.dynamic_iter
         return model
 
     def internal_trimming_rule(self, word, count, min_count):
@@ -95,13 +95,20 @@ class TWEC:
     def train_model(self, sentences):
         model = None
         if self.compass == None or self.init_mode != "copy":
-            model = Word2Vec(sg=self.sg, size=self.size, alpha=self.static_alpha, iter=self.static_iter,
-                             negative=self.negative,
-                             window=self.window, min_count=self.min_count, workers=self.workers)
+            model = Word2Vec(
+                sg=self.sg, 
+                vector_size=self.size, 
+                alpha=self.static_alpha, 
+                epochs=self.static_iter,
+                negative=self.negative,
+                window=self.window, 
+                min_count=self.min_count, 
+                workers=self.workers
+                )
             model.build_vocab(sentences, trim_rule=self.internal_trimming_rule if self.compass != None else None)
         if self.compass != None:
             model = self.initialize_from_compass(model)
-        model.train(sentences, total_words=sum([len(s) for s in sentences]), epochs=model.iter, compute_loss=True)
+        model.train(sentences, total_words=sum([len(s) for s in sentences]), epochs=model.epochs, compute_loss=True)
         return model
 
     def train_compass(self, compass_text, overwrite=False):
@@ -118,7 +125,7 @@ class TWEC:
             self.compass = self.train_model(sentences)
             self.compass.save(os.path.join(self.opath, "compass.model"))
 
-        self.gvocab = self.compass.wv.vocab
+        self.gvocab = self.compass.wv.key_to_index
 
     def train_slice(self, slice_text, save=True):
         if self.compass == None:
@@ -148,11 +155,11 @@ class TWEC:
             m.negative = self.negative
             m.window = self.window
             m.vector_size = self.size
-            if vocab_len > 0 and vocab_len != len(m.wv.vocab):
+            if vocab_len > 0 and vocab_len != len(m.wv.key_to_index):
                 print(
-                    "ERROR in evaluation: models with different vocab size {} != {}".format(vocab_len, len(m.wv.vocab)))
+                    "ERROR in evaluation: models with different vocab size {} != {}".format(vocab_len, len(m.wv.key_to_index)))
                 return
-            vocab_len = len(m.wv.vocab)
+            vocab_len = len(m.wv.key_to_index)
             mods.append(m)
         tfiles = glob.glob(self.test + '/*.txt')
         if len(mods) != len(tfiles):
@@ -171,7 +178,7 @@ class TWEC:
             mplp = np.log(probs[n_tfn])
             mplps.append(mplp)
 
-            nwords = len([w for s in sentences for w in s if w in mods[n_tfn].wv.vocab])
+            nwords = len([w for s in sentences for w in s if w in mods[n_tfn].wv.key_to_index])
             nll = sum(llhd[n_tfn]) / (nwords)
             nlls.append(nll)
             print("Slice {} {}\n\t- Posterior log probability {:.4f}\n\tNormalized log likelihood {:.4f}".format(n_tfn,
