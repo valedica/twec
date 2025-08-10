@@ -51,10 +51,10 @@ Installing
 **Important**: always create a virtual environment because TWEC uses a custom version of the gensim library.
 
 * clone the repository
-* :code:`virtualenv -p python3.6 env`
+* :code:`pyenv local 3.9.7`
+* :code:`python -m venv env`
 * :code:`source env/bin/activate`
-* :code:`pip install cython`
-* :code:`pip install git+https://github.com/valedica/gensim.git`
+* :code:`pip install -r requirements_dev.txt`
 * cd in repository
 * :code:`pip install -e .`
 
